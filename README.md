@@ -1,4 +1,4 @@
-# authenticate_service
+# Authenticate Service
 
 ## Install Bun
 You are install with [it's home](https://bun.sh).
@@ -13,3 +13,5 @@ bun install
 ```cmd
 bun run start
 ```
+## Contact
+Vũ Lưu
