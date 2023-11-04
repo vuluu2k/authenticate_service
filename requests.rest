@@ -1,1 +1,13 @@
-GET http://localhost:3000/shops
+
+### api register a account
+POST http://localhost:3000/api/v1/auth/register/vuluu2k?username=test&password=test
+Content-Type: application/json
+
+{
+  "username": "vuluu2kk",
+  "password": "vuluu2k",
+  "email": "vuluu2kk@gmail.com",
+  "last_name": "luu",
+  "first_name": "vu",
+  "phone_number": "0123456789"
+}
