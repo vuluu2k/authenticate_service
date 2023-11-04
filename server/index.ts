@@ -1,5 +1,6 @@
 import express from 'express';
 import router from './src/routers';
+import connectDB from './src/configs/database';
 
 const app = express();
 
@@ -8,6 +9,8 @@ app.use(express.urlencoded({ extended: true }));
 
 router(app);
 
-app.listen(3000, () => {
-  console.log('Server started on http://localhost:3000');
+connectDB().then(() => {
+  app.listen(3000, () => {
+    console.log('Server started on http://localhost:3000');
+  });
 });
