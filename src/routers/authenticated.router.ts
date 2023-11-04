@@ -1,12 +1,12 @@
 import { Router } from 'express';
+import authenticatedController from '../controllers/authenticated.controller';
 
 const router = Router();
 
-router.get('/register', (req, res) => {
-  res.json({ text: 'register' });
-});
-router.get('/login', (req, res) => {
-  res.json({ text: 'login' });
-});
+router.post('/register/:id', authenticatedController.register);
+
+router.post('/login', authenticatedController.login);
+
+router.post('/logout', authenticatedController.logout);
 
 export default router;
