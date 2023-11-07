@@ -22,7 +22,8 @@ Content-Type: application/json
 
 ### check verifly 
 GET http://localhost:3000/api/v1/auth/info
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ3MjkxN2IyYzUxOWM4ZmIxNDgxMzYiLCJmdWxsbmFtZSI6InN5IGxvbmciLCJpYXQiOjE2OTkzNTEwMTYsImV4cCI6MTcwMjk1MTAxNn0.ep4WHZ2QV4aw8JMpK52lLjSEcZEdOnYf4XRkhZmW6cE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ3MjkxN2IyYzUxOWM4ZmIxNDgxMzYiLCJmdWxsbmFtZSI6InN5IGxvbmciLCJpYXQiOjE2OTkzNTEyNzgsImV4cCI6MTY5OTM1MTMwOH0.LpokWI-5Ve1s5AyEWoMGgB0i-z7ch_dLQEBUDSYW4Yo
+
 ### logout
 POST http://localhost:3000/api/v1/auth/logout
 Content-Type: application/json
