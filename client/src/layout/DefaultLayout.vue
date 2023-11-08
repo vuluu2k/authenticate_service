@@ -1,14 +1,13 @@
 <template>
-    <div>
-        <h1>this is router</h1>
-        <router-view></router-view>
-    </div>
+  <div>
+    <h1>this is router</h1>
+  </div>
 </template>
 <script>
 export default {
-    name: 'DefaultLayout',
-    data() {
-        return {};
-    },
+  name: 'DefaultLayout',
+  data() {
+    return {};
+  },
 };
 </script>
