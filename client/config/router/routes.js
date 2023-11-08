@@ -1,5 +1,5 @@
-import LoginView from "../components/LoginView.vue";
-import RegisterView from "../components/RegisterView.vue";
+import LoginView from "../../src/components/LoginView.vue";
+import RegisterView from "../../src/components/RegisterView.vue";
 
 const routes = [
   {
