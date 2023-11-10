@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <DefaultLayout>
     <form id="form_container">
       <div id="form_header">
         <h3>{{ title }}</h3>
@@ -35,14 +35,16 @@
       </div>
       <div id="form_footer">
         <span>Bạn mới biết đến Shopee?</span>
-        <a href="#">Đăng ký</a>
+        <router-link to="/register">Đăng kí</router-link>
       </div>
     </form>
-  </div>
+  </DefaultLayout>
 </template>
 
 <script>
+import DefaultLayout from '../layout/DefaultLayout.vue';
 export default {
+  components: { DefaultLayout },
   data() {
     return {
       title: 'Đăng nhập',
@@ -52,19 +54,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-  font-family: Arial, Helvetica, sans-serif;
-}
-#main {
-  min-height: 100vh;
-  background: url('../assets/shopee_background.png') no-repeat;
-  background-size: cover;
-  background-position: center center;
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
 #form_container {
   background-color: white;
   border-radius: 10px;
