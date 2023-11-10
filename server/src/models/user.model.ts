@@ -11,20 +11,24 @@ const userSchema = new Schema(
     last_name: { type: String },
     first_name: { type: String },
     phone_number: { type: String, maxLength: 10 },
-    access_token: { type: String },
-    refresh_token: { type: String },
+    access_token: { type: String, default: "" },
+    refresh_token: { type: String, default: "" },
   },
   { timestamps: true }
 );
 
-userSchema.method('jwt', function (expireTime: number) {
-  return jwt.sign({ _id: this._id, fullname: this.first_name + ' ' + this.last_name },
-    process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "30s" });
-})
+userSchema.method('jwt', function (account) {
+  const user = account || { _id: this._id, email: this.email }
 
-userSchema.method('rjwt', function (expireTime: number) {
-  return jwt.sign({ _id: this._id, fullname: this.first_name + ' ' + this.last_name },
-    process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: "30s" });
+  const access_token: string = jwt.sign(user,
+    process.env.ACCESS_TOKEN_SECRET as string, {
+    expiresIn: 24 * 60 * 60
+  });
+
+  const refresh_token: string = jwt.sign(user,
+    process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: 30 * 24 * 60 * 60 });
+
+  return { access_token, refresh_token }
 })
 
 userSchema.method('getInfo', function () {

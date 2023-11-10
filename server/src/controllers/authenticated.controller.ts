@@ -8,13 +8,10 @@ class AuthenticatedClass {
       const { redirect_url } = req.query;
       const { username, password, email, last_name, first_name, phone_number } =
         req.body;
-
       const userExisting = await userModel.findOne({ username });
       const emailExisting = await userModel.findOne({ email });
       if (userExisting && emailExisting)
-        return res
-          .status(400)
-          .json({ success: false, message: 'Username or email already exists' });
+        return res.status(400).json({ success: false, message: 'Username or email already exists' });
 
       const passwordHash = await Bun.password.hash(password);
 
@@ -27,13 +24,12 @@ class AuthenticatedClass {
         phone_number,
       };
 
-      const result = await userModel.create(data_created);
-
+      const result = await userModel.create(data_created)
       //@ts-ignore
-      const jwt = result.jwt();
-
-
-      res.redirect(`${redirect_url}?jwt=${jwt}`);
+      delete result.password
+      //@ts-ignore
+      const accessToken = result.jwt(result._doc).access_token
+      res.redirect(`${redirect_url}?jwt=${accessToken}`);
     } catch (error) {
       console.log(error);
     }
@@ -41,11 +37,12 @@ class AuthenticatedClass {
 
   async login(req: Request, res: Response) {
     try {
-      const { redirect_url } = req.query;
+      const { redirect_url, rule } = req.query;
       const { username, password } = req.body;
-      const data = req.body
       //Kiểm tra tài khoản có tồn tại trong DB 
-      const account = await userModel.findOne({ username });
+      const select_rule = rule + ' password'
+      const account = await userModel.findOne({ username }).select(select_rule);
+
       if (!account) {
         return res.status(404).json({ message: 'Account is not available' })
       }
@@ -53,14 +50,16 @@ class AuthenticatedClass {
       if (!isPasswordValid) {
         return res.status(401).json({ message: 'Invalid password' });
       }
+      //@ts-ignore
+      delete account._doc.password
 
       //@ts-ignore
-      const access_token = account.jwt();
+      const { access_token, refresh_token } = rule ? account.jwt(account._doc) : account.jwt();
 
       //@ts-ignore
-      const refresh_token = account.rjwt(30 * 24 * 60 * 60 * 1000)
-      res.redirect(`url=${redirect_url}jwt=${access_token}&rjwt=${refresh_token}`);
-    } catch {
+      return res.redirect(`url=${redirect_url}jwt=${access_token}&rjwt=${refresh_token}`);
+    } catch (error) {
+      console.log(error)
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -68,7 +67,7 @@ class AuthenticatedClass {
   async logout(req: Request, res: Response) {
     const accessToken = req.body.token;
     if (!accessToken) res.status(403).json({ message: 'you must be logged in' });
-    await userModel.deleteOne({ accessToken: accessToken });
+    await userModel.updateOne({ access_token: " " });
     res.status(200).json({ message: 'logout successfully' });
   }
 
