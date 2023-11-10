@@ -4,9 +4,9 @@ POST http://localhost:3000/api/v1/auth/register?rule=email first_name last_name
 Content-Type: application/json
 
 {
-  "username": "vuluu2kd",
-  "password": "vuluu2k",
-  "email": "vuluu2kd@gmail.com",
+  "username": "test123",
+  "password": "test123",
+  "email": "vuluu2kdddd@gmail.com",
   "last_name": "luu",
   "first_name": "vu",
   "phone_number": "0123456789"
@@ -16,8 +16,8 @@ POST http://localhost:3000/api/v1/auth/login?redirect_url=http://shopeeFake.com&
 Content-Type: application/json
 
 {
-  "username": "vuluu2k",
-  "password": "vuluu2k"
+  "username": "test123",
+  "password": "test123"
 }
 
 ### check verifly 

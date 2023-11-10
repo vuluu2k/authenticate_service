@@ -1,6 +1,6 @@
 <template>
   <DefaultLayout>
-    <form id="form_container">
+    <form id="form_container" @submit.prevent="login">
       <div id="form_header">
         <h3>{{ title }}</h3>
       </div>
@@ -9,6 +9,7 @@
           <div>
             <input
               type="text"
+              v-model="username"
               placeholder="Email/Số điện thoại/Tên đăng nhập"
             />
           </div>
@@ -16,7 +17,7 @@
         </div>
         <div class="input_container">
           <div class="input_wrapper">
-            <input type="text" placeholder="Mật khẩu" />
+            <input type="text" v-model="password" placeholder="Mật khẩu" />
             <i class="bi bi-eye"></i>
             <!-- <i class="bi bi-eye-slash"></i> -->
           </div>
@@ -43,12 +44,29 @@
 
 <script>
 import DefaultLayout from '../layout/DefaultLayout.vue';
+import authenticateApi from '../api/authenticateApi';
 export default {
   components: { DefaultLayout },
   data() {
     return {
       title: 'Đăng nhập',
+      username: '',
+      password: '',
     };
+  },
+  methods: {
+    async login() {
+      const data = await authenticateApi.login({
+        username: this.username,
+        password: this.password,
+      });
+
+      if (data.success) {
+        window.location.replace(
+          `http://shopee.vn?access_token=${data.access_token}&refresh_token=${data.refresh_token}`
+        );
+      }
+    },
   },
 };
 </script>
