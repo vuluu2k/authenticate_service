@@ -1,13 +1,40 @@
 
 ### api register a account
-POST http://localhost:3000/api/v1/auth/register/vuluu2k?username=test&password=test
+POST http://localhost:3000/api/v1/auth/register?rule=email first_name last_name
 Content-Type: application/json
 
 {
-  "username": "vuluu2kk",
+  "username": "vuluu2kd",
   "password": "vuluu2k",
-  "email": "vuluu2kk@gmail.com",
+  "email": "vuluu2kd@gmail.com",
   "last_name": "luu",
   "first_name": "vu",
   "phone_number": "0123456789"
+}
+### api logim a account
+POST http://localhost:3000/api/v1/auth/login?redirect_url=http://shopeeFake.com&rule=email first_name last_name
+Content-Type: application/json
+
+{
+  "username": "vuluu2k",
+  "password": "vuluu2k"
+}
+
+### check verifly 
+GET http://localhost:3000/api/v1/auth/info
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRlMjkyYzFlMmFiYTQzZDU1ZWEzYTYiLCJlbWFpbCI6InZ1bHV1MmtAZ21haWwuY29tIiwibGFzdF9uYW1lIjoibHV1IiwiZmlyc3RfbmFtZSI6InZ1IiwiaWF0IjoxNjk5NjIxMjMzLCJleHAiOjE2OTk3MDc2MzN9.WRE_AnUN4HthLzQkzxffiXHSC0D9ZvC42Y4IonTTijg
+
+### logout
+POST http://localhost:3000/api/v1/auth/logout
+Content-Type: application/json
+
+{
+  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ3MjkxN2IyYzUxOWM4ZmIxNDgxMzYiLCJmdWxsbmFtZSI6InN5IGxvbmciLCJpYXQiOjE2OTkzNTA5MjQsImV4cCI6MTY5OTM1MDk1NH0.YSYlSD_RE32rATwr6T9JdE2B9SyB9gZ4ema5pLWQGMU"
+}
+###4
+POST http://localhost:3000/api/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ3MjkxN2IyYzUxOWM4ZmIxNDgxMzYiLCJmdWxsbmFtZSI6InN5IGxvbmciLCJpYXQiOjE2OTkzNDg3NzAsImV4cCI6NDI5MTM0ODc3MH0.3RE2WVJeAf2pQcrmAGMiedEj0XkISNLPiz2s37a02-g"
 }
