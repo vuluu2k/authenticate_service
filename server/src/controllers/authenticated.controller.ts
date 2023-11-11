@@ -70,9 +70,9 @@ class AuthenticatedClass {
       //@ts-ignore
       const { access_token, refresh_token } = rule
         ? //@ts-ignore
-          account.jwt(account._doc)
+        account.jwt(account._doc)
         : //@ts-ignore
-          account.jwt();
+        account.jwt();
 
       //@ts-ignore
       return res.status(200).json({
@@ -98,7 +98,7 @@ class AuthenticatedClass {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
-
+  //dsa
   async refresh(req: Request, res: Response) {
     try {
       const { refresh_token } = req.body;
