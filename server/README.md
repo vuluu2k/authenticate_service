@@ -18,6 +18,20 @@ bun install
 bun run dev
 ```
 
+## Development with docker
+
+1. Install library
+
+```zsh
+make build
+```
+
+2. Running app
+
+```zsh
+make app
+```
+
 ## Contact
 
 [Vũ Lưu](https://linktr.ee/vuluu2k)
