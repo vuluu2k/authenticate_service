@@ -4,6 +4,8 @@ import connectDB from "./src/configs/database";
 import cors from "cors";
 const app = express();
 
+const port = process.env.PORT || 3000;
+
 const corsOptions = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -16,7 +18,7 @@ app.use(cors(corsOptions));
 router(app);
 
 connectDB().then(() => {
-  app.listen(3000, () => {
-    console.log("Server started on Port http://localhost:300");
+  app.listen(port, () => {
+    console.log(`Server started on Port http://localhost:${port}`);
   });
 });
