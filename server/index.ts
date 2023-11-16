@@ -5,8 +5,8 @@ import cors from "cors";
 const app = express();
 
 const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
 
 app.use(express.json({ limit: "50mb" }));
@@ -16,7 +16,7 @@ app.use(cors(corsOptions));
 router(app);
 
 connectDB().then(() => {
-  app.listen(3000, () => {
-    console.log("Server started on Port http://localhost:300");
-  });
+    app.listen(3000, () => {
+        console.log("Server started on Port http://localhost:300");
+    });
 });

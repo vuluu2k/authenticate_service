@@ -1,6 +1,6 @@
 <template>
   <DefaultLayout>
-    <form id="form_container" @submit.prevent="handleSubmit">
+    <form id="form_container" @submit.prevent="onSubmit">
       <div id="form_header">
         <h3>Đăng kí</h3>
       </div>
@@ -11,10 +11,10 @@
               type="text"
               placeholder="Tên đăng ki"
               class="name"
-              v-model="data.userName"
+              v-model="data.username"
             />
           </div>
-          <p class="error"></p>
+          <p class="error">{{ message.messageUserName }}</p>
         </div>
         <div class="input_container">
           <div class="input_wrapper">
@@ -22,20 +22,25 @@
               type="text"
               placeholder="Mật khẩu"
               class="password"
-              @change="getValue"
+              v-model="data.password"
             />
             <div class="icon">
               <i class="bi bi-eye"></i>
             </div>
             <!-- <i class="bi bi-eye-slash"></i> -->
           </div>
-          <p class="error"></p>
+          <p class="error">{{ message.messagePassword }}</p>
         </div>
         <div class="input_container">
           <div class="input_wrapper">
-            <input type="email" placeholder="Email" class="email" />
+            <input
+              type="email"
+              placeholder="Email"
+              class="email"
+              v-model="data.email"
+            />
           </div>
-          <p class="error"></p>
+          <p class="error">{{ message.messageEmail }}</p>
         </div>
         <button class="btn_dang_nhap" type="submit">Đăng Kí</button>
         <div id="hoac_container">
@@ -54,50 +59,69 @@
 
 <script>
 import DefaultLayout from '../layout/DefaultLayout.vue';
+import authenticateApi from '../api/authenticateApi';
 import validator from 'validator';
-import axios from 'axios';
-const URLAPI = '';
 export default {
   components: { DefaultLayout },
-  methods: {
-    handleSubmit: async function (e) {
-      // const email = document.querySelector('.email');
-      // const password = document.querySelector('.password');
-      // const name = document.querySelector('.name');
-      // console.log(email, password, name);
-      // this.checkValue(email.value);
-      // this.checkEmpty(name.value);
-      // this.checkLength(password.value);
-      // console.log(this.data.userName);
-      try {
-        const res = await axios.post(URLAPI, this.data);
-        this.resData = res.data;
-      } catch (error) {
-        console.log(this.err);
-      }
-    },
-    checkValue: function (inputValue) {
-      console.log(validator.isEmail(inputValue));
-    },
-    checkEmpty: function (inputValue) {
-      console.log(validator.isEmpty(inputValue, { ignore_whitespace: false }));
-    },
-    checkLength: function (inputValue) {
-      console.log(
-        validator.isByteLength(inputValue, { min: 6, max: undefined })
-      );
-    },
-  },
   data() {
     return {
       data: {
-        userName: '',
+        username: '',
         email: '',
         password: '',
       },
-      resData: null,
-      err: null,
+      status: {
+        statusUserName: true,
+        statusPassword: true,
+        statusEmail: true,
+      },
+      message: {
+        messageUserName: '',
+        messagePassword: '',
+        messageEmail: '',
+      },
     };
+  },
+  methods: {
+    async register() {
+      console.log(this.data);
+      await authenticateApi.register(this.data);
+    },
+    handelValidator() {
+      const { username, password, email } = this.data;
+      // Check password
+      if (!validator.isLength(password.trim(), { min: 6 })) {
+        this.status.statusPassword = false;
+        this.message.messagePassword = 'mat khau phai co it nhat 6 ki tu';
+      } else {
+        this.status.statusPassword = true;
+        this.message.messagePassword = '';
+      }
+
+      //Check username
+      if (!validator.isLength(username.trim(), { min: 6 })) {
+        this.status.statusUserName = false;
+        this.message.messageUserName = 'ten phai co it nhat 6 ki tu';
+      } else {
+        this.status.statusUserName = true;
+        this.message.messageUserName = '';
+      }
+
+      // check Email
+      if (!validator.isEmail(email.trim()) || !email) {
+        this.status.statusEmail = false;
+        this.message.messageEmail = 'vui long nhap email';
+      } else {
+        this.status.statusEmail = true;
+        this.message.messageEmail = '';
+      }
+    },
+    onSubmit() {
+      const { statusUserName, statusPassword, statusEmail } = this.status;
+      if (statusUserName && statusPassword && statusEmail) {
+        this.register();
+      }
+    },
   },
 };
 </script>
@@ -183,5 +207,9 @@ export default {
 #form_footer a {
   color: #ee4d2d;
   text-decoration: none;
+}
+.error {
+  font-size: 12px;
+  color: red;
 }
 </style>

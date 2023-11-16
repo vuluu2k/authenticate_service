@@ -1,27 +1,28 @@
 <template>
   <DefaultLayout>
-    <form id="form_container" @submit.prevent="login">
+    <form id="form_container" @submit.prevent="onSubmit">
       <div id="form_header">
-        <h3>{{ title }}</h3>
+        <h3>Đăng Nhập</h3>
       </div>
       <div id="form_content">
         <div class="input_container">
           <div>
             <input
               type="text"
-              v-model="username"
+              v-model="data.username"
               placeholder="Email/Số điện thoại/Tên đăng nhập"
+              :class="status.statusUserName ? 'success' : 'failer'"
             />
           </div>
-          <p class="error"></p>
+          <p class="error">{{ message.messageUserName }}</p>
         </div>
         <div class="input_container">
           <div class="input_wrapper">
-            <input type="text" v-model="password" placeholder="Mật khẩu" />
+            <input type="text" v-model="data.password" placeholder="Mật khẩu" />
             <i class="bi bi-eye"></i>
             <!-- <i class="bi bi-eye-slash"></i> -->
           </div>
-          <p class="error"></p>
+          <p class="error">{{ message.messagePassword }}</p>
         </div>
         <button class="btn_dang_nhap" type="submit">Đăng nhập</button>
         <div class="link_container">
@@ -41,31 +42,68 @@
     </form>
   </DefaultLayout>
 </template>
-
 <script>
 import DefaultLayout from '../layout/DefaultLayout.vue';
 import authenticateApi from '../api/authenticateApi';
+import validator from 'validator';
 export default {
   components: { DefaultLayout },
   data() {
     return {
-      title: 'Đăng nhập',
-      username: '',
-      password: '',
+      data: {
+        username: '',
+        password: '',
+      },
+      status: {
+        statusUserName: true,
+        statusPassword: true,
+      },
+      message: {
+        messageUserName: '',
+        messagePassword: '',
+      },
     };
   },
   methods: {
     async login() {
-      const data = await authenticateApi.login({
-        username: this.username,
-        password: this.password,
-      });
+      const data = await authenticateApi.login(this.data);
 
       if (data.success) {
         window.location.replace(
           `http://shopee.vn?access_token=${data.access_token}&refresh_token=${data.refresh_token}`
         );
       }
+    },
+    handelValidator() {
+      const { username, password } = this.data;
+      // Check Username
+      if (!validator.isLength(password.trim(), { min: 6 })) {
+        this.status.statusPassword = false;
+        this.message.messagePassword = 'mat khau phai co it nhat 6 ki tu';
+      } else {
+        this.status.statusPassword = true;
+        this.message.messagePassword = '';
+      }
+
+      // Check password
+      if (!validator.isLength(username.trim(), { min: 6 })) {
+        this.status.statusUserName = false;
+        this.message.messageUserName = 'ten phai co it nhat 6 ki tu';
+      } else {
+        this.status.statusUserName = true;
+        this.message.messageUserName = '';
+      }
+    },
+
+    onSubmit() {
+      this.handelValidator();
+      if (this.status.statusUserName && this.status.statusPassword) {
+        this.login();
+      }
+      // userInfo
+      // username: username1
+      // password: 1234567
+      //gmail: abcde@gmail.com
     },
   },
 };
@@ -152,5 +190,17 @@ export default {
 #form_footer a {
   color: #ee4d2d;
   text-decoration: none;
+}
+
+.success {
+  border: 10px solid rgb(6, 186, 6);
+}
+.failer {
+  border: 1px solid rgb(225, 7, 7);
+}
+
+.error {
+  font-size: 12px;
+  color: red;
 }
 </style>
