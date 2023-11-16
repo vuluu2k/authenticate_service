@@ -32,6 +32,11 @@ make build
 make app
 ```
 
+3. If node_modules not installing
+
+```zsh
+make install
+```
 ## Contact
 
 [Vũ Lưu](https://linktr.ee/vuluu2k)
